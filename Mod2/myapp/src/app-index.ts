@@ -1,34 +1,28 @@
-import { LitElement, css } from 'lit';
+import { LitElement, html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
-
-import './pages/app-home';
-import './components/header';
-import './styles/global.css';
-import { router } from './router';
 
 @customElement('app-index')
 export class AppIndex extends LitElement {
   static styles = css`
-    main {
-      padding-left: 16px;
-      padding-right: 16px;
-      padding-bottom: 16px;
+    :host {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      font-family: sans-serif;
     }
+    h1 { color: var(--sl-color-primary-600); }
   `;
 
-  firstUpdated() {
-    router.addEventListener('route-changed', () => {
-      if ("startViewTransition" in document) {
-        (document as any).startViewTransition(() => this.requestUpdate());
-      }
-      else {
-        this.requestUpdate();
-      }
-    });
-  }
-
   render() {
-    // router config can be round in src/router.ts
-    return router.render();
+    return html`
+      <main>
+        <h1>CMPS 460</h1>
+        <h2>Developed by Sam Fehl</h2>
+        <p>Currently running on Netlify via GitHub CD.</p>
+      </main>
+    `;
   }
 }
