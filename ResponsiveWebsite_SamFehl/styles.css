@@ -1,0 +1,191 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Base styles */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    font-size: 1rem;
+    color: #222;
+}
+
+/* Header */
+.site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #0a7c6a;
+    color: #fff;
+}
+
+.nav a {
+    color: #fff;
+    margin-left: 1.5rem;
+    text-decoration: none;
+}
+
+.nav a:hover {
+    text-decoration: underline;
+}
+
+/* Hero Section */
+.hero {
+    position: relative;
+    width: 100%;
+    height: 90vh;
+    overflow: hidden;
+}
+
+.hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-text {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 1.5rem;
+    max-width: 28rem;
+}
+
+.hero-text button {
+    margin-top: 1rem;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    background-color: #ffcc00;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.hero-text button:hover {
+    background-color: #e6b800;
+}
+
+/* Main Content */
+.content {
+    padding: 4rem 2rem;
+    max-width: 75rem;
+    margin: 0 auto;
+}
+
+.card {
+    max-width: 60rem;
+    margin: 0 auto 3rem auto;
+    text-align: center;
+}
+
+/* Features */
+.features {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.feature-card {
+    width: 18rem;
+    text-align: center;
+}
+
+.feature-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+}
+
+/* Footer */
+.site-footer {
+    background-color: #0a7c6a;
+    color: #fff;
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+/* -------------------------
+   Responsive Design
+-------------------------- */
+
+/* Tablet */
+@media (max-width: 64em) {
+    .hero-text {
+        left: 5%;
+        padding: 1.5rem;
+    }
+}
+
+/* Mobile */
+@media (max-width: 40em) {
+    .site-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .nav a {
+        margin: 0 0.5rem;
+    }
+
+    .hero {
+        height: auto;
+    }
+
+    .hero img {
+        height: auto;
+    }
+
+    .hero-text {
+        position: static;
+        transform: none;
+        max-width: 100%;
+        margin: 1rem;
+    }
+
+    .features {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* Modal Background */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+/* Modal Box */
+.modal-content {
+    background-color: #fff;
+    padding: 2rem;
+    max-width: 25rem;
+    width: 90%;
+    border-radius: 0.5rem;
+    text-align: center;
+    position: relative;
+}
+
+/* Close Button */
+.close-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.8rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
