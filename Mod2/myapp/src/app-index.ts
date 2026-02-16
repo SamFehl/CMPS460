@@ -21,7 +21,7 @@ export class AppIndex extends LitElement {
       <main>
         <h1>CMPS 460</h1>
         <h2>Developed by Sam Fehl</h2>
-        <p>Currently running on Netlify via GitHub CD.</p>
+        <p>Currently running on PPU's Jail via Filezilla Upload.</p>
       </main>
     `;
   }
