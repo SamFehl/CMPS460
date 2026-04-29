@@ -41,6 +41,8 @@ const SAMPLE_RECORDS: RecordEntry[] = [
 
 const INITIAL_FORM = { recordName: '', artistName: '', genre: '', releaseDate: '', criticRating: 0, personalRating: 0, purchaseLocation: '', purchasePrice: '', purchaseDate: '' };
 
+type SortOption = 'Newest' | 'Artist' | 'Album' | 'Rating';
+
 export default function RecordTracker() {
   const [currentScreen, setCurrentScreen] = useState<'add' | 'list' | 'detail' | 'stats'>('list');
   const [records, setRecords] = useState<RecordEntry[]>(SAMPLE_RECORDS);
@@ -49,6 +51,7 @@ export default function RecordTracker() {
   const [isEditing, setIsEditing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedYearRecords, setSelectedYearRecords] = useState<{year: string, items: RecordEntry[]}>({year: '', items: []});
+  const [sortType, setSortType] = useState<SortOption>('Newest');
 
   const saveRecord = () => {
     if (!formData.recordName || !formData.artistName) {
@@ -105,6 +108,15 @@ export default function RecordTracker() {
   const sortedYears = Object.keys(yearMap).sort();
   const maxCountInOneYear = records.length > 0 ? Math.max(...Object.values(yearMap).map((v: any) => v.length)) : 1;
 
+  // SORT LOGIC
+  const getSortedRecords = () => {
+    const items = [...records];
+    if (sortType === 'Artist') return items.sort((a, b) => a.artistName.localeCompare(b.artistName));
+    if (sortType === 'Album') return items.sort((a, b) => a.recordName.localeCompare(b.recordName));
+    if (sortType === 'Rating') return items.sort((a, b) => b.personalRating - a.personalRating);
+    return items; // Default (Newest)
+  };
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
@@ -158,19 +170,37 @@ export default function RecordTracker() {
           )}
 
           {currentScreen === 'list' && (
-            <ScrollView style={styles.content}>
-              {records.length === 0 ? (
-                <Text style={styles.emptyMsg}>Your collection is empty.</Text>
-              ) : (
-                records.map((item) => (
-                  <TouchableOpacity key={item.id} style={styles.card} onPress={() => { setSelectedRecord(item); setCurrentScreen('detail'); }}>
-                    <View style={{ flex: 1 }}><Text style={styles.cardTitle}>{item.recordName}</Text><Text style={styles.cardSubtitle}>{item.artistName}</Text></View>
-                    <MaterialIcons name="chevron-right" size={24} color="#B594FF" />
+            <View style={{ flex: 1 }}>
+              {/* SORT MENU */}
+              <View style={styles.sortContainer}>
+                {(['Newest', 'Artist', 'Album', 'Rating'] as SortOption[]).map((type) => (
+                  <TouchableOpacity 
+                    key={type} 
+                    style={[styles.sortBtn, sortType === type && styles.sortBtnActive]} 
+                    onPress={() => setSortType(type)}
+                  >
+                    <Text style={[styles.sortText, sortType === type && styles.sortTextActive]}>{type}</Text>
                   </TouchableOpacity>
-                ))
-              )}
-              <View style={{height: 40}} />
-            </ScrollView>
+                ))}
+              </View>
+
+              <ScrollView style={styles.content}>
+                {records.length === 0 ? (
+                  <Text style={styles.emptyMsg}>Your collection is empty.</Text>
+                ) : (
+                  getSortedRecords().map((item) => (
+                    <TouchableOpacity key={item.id} style={styles.card} onPress={() => { setSelectedRecord(item); setCurrentScreen('detail'); }}>
+                      <View style={{ flex: 1 }}>
+                        <Text style={styles.cardTitle}>{item.recordName}</Text>
+                        <Text style={styles.cardSubtitle}>{item.artistName}</Text>
+                      </View>
+                      <MaterialIcons name="chevron-right" size={24} color="#B594FF" />
+                    </TouchableOpacity>
+                  ))
+                )}
+                <View style={{height: 40}} />
+              </ScrollView>
+            </View>
           )}
 
           {currentScreen === 'detail' && selectedRecord && (
@@ -305,5 +335,11 @@ const styles = StyleSheet.create({
   listSub: { color: '#AAA', fontSize: 14 },
   nav: { flexDirection: 'row', height: 70, backgroundColor: '#111115', borderTopWidth: 1, borderTopColor: '#333', justifyContent: 'space-around', alignItems: 'center' },
   navBtn: { alignItems: 'center' },
-  navText: { color: '#555', fontSize: 10, marginTop: 4 }
+  navText: { color: '#555', fontSize: 10, marginTop: 4 },
+  // ADDED STYLES
+  sortContainer: { flexDirection: 'row', justifyContent: 'space-around', backgroundColor: '#111115', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#333' },
+  sortBtn: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, backgroundColor: '#2D2D35' },
+  sortBtnActive: { backgroundColor: '#B594FF' },
+  sortText: { color: '#AAA', fontSize: 12, fontWeight: 'bold' },
+  sortTextActive: { color: '#111115' }
 });
